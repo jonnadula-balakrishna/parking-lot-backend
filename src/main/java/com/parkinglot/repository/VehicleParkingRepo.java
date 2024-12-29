@@ -33,4 +33,7 @@ public interface VehicleParkingRepo extends JpaRepository<ParkingVehicles, Long>
     @Query(value = "select a.slotNumber from ParkingVehicles a where a.slotStatus =:parking and a.vehicleTypes =:vehicleTypes   and a.vehicleNumber =:vehicleNumber order by vehicleIn desc limit 1")
     Optional<ParkingVehicles> checkVehicleAlredyParkOrNot(String vehicleNumber, VehicleTypes vehicleTypes, String parking);
 
+    @Query("select a from ParkingVehicles a where a.slotStatus =:status and a.slotNumber =:slotCode ")
+    Optional<ParkingVehicles>  getSlotInfo( String slotCode, String status);
+
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -19,12 +20,16 @@ public class VehicleParkingController {
 
 
     //  Parking Vehicles & slotCodes
-    @GetMapping("/getAll_parking_vehicles") // all parking vehicles list
+    @GetMapping("/getAll_parking_vehicles")
     public ResponseEntity<?> getAllParkingVehicles() {
         List<ParkingVehicles> allParkingVehicles = null;
-        allParkingVehicles = vehicleParkingService.getAllParkingVehicles();
-        if (allParkingVehicles.isEmpty()) {
-            allParkingVehicles = new ArrayList<>();
+        try {
+            allParkingVehicles = vehicleParkingService.getAllParkingVehicles();
+            if (allParkingVehicles.isEmpty()) {
+                allParkingVehicles = new ArrayList<>();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         return ResponseEntity.ok(allParkingVehicles);
     }
@@ -32,29 +37,57 @@ public class VehicleParkingController {
     // Dash Board
     @GetMapping("/available_slots")
     public ResponseEntity<?> getAvailableSlots() {
-        List<AvailableSlot> availableSlots = vehicleParkingService.getAvailableSlots();
+        List<AvailableSlot> availableSlots = null;
+        try {
+            availableSlots = vehicleParkingService.getAvailableSlots();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return ResponseEntity.ok(availableSlots);
     }
 
     // parking  registration
     @PostMapping("/vehicle_registration")
     public ResponseEntity<?> saveVehicleRegistration(@RequestBody ParkingVehicles slot) throws Exception {
-        ParkingVehicles availableSlots = vehicleParkingService.saveVehicleReg(slot);
+        ParkingVehicles availableSlots = null;
+        try {
+            availableSlots = vehicleParkingService.saveVehicleReg(slot);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return ResponseEntity.ok(availableSlots);
     }
     // UN-parking vehicles
     @PutMapping("/vehicle/unParking/{slotCode}")
     public ResponseEntity<?> getVehicleParkingService(@PathVariable String slotCode) {
-        vehicleParkingService.leaveOnParkingVehicleReg(slotCode);
+        try {
+            vehicleParkingService.leaveOnParkingVehicleReg(slotCode);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return ResponseEntity.ok("un parked successful!");
     }
 
     @GetMapping("/get_all_vehicle_list")
     public ResponseEntity<?> getAllVehicleList() {
-        List<ParkingVehicles> allVehiclesListWithStatus = vehicleParkingService.getAllVehiclesListWithStatus();
+        List<ParkingVehicles> allVehiclesListWithStatus = null;
+        try {
+            allVehiclesListWithStatus = vehicleParkingService.getAllVehiclesListWithStatus();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return ResponseEntity.ok(allVehiclesListWithStatus);
     }
 
 
-
+    @GetMapping("/getSlotInfo/{slotCode}")
+    public ResponseEntity<?> getSlotInfo(@PathVariable String slotCode) {
+        Optional<ParkingVehicles> allVehiclesListWithStatus = null;
+        try {
+            allVehiclesListWithStatus = vehicleParkingService.getSlotInfo(slotCode);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.ok(allVehiclesListWithStatus);
+    }
 }

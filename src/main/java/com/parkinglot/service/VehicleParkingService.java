@@ -4,6 +4,7 @@ import com.parkinglot.dao.AvailableSlot;
 import com.parkinglot.entitys.ParkingVehicles;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface VehicleParkingService {
 
@@ -17,4 +18,5 @@ public interface VehicleParkingService {
 
     List<ParkingVehicles> getAllVehiclesListWithStatus();
 
+    Optional<ParkingVehicles> getSlotInfo(String slotCode);
 }

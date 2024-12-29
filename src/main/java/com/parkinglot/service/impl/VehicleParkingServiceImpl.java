@@ -137,5 +137,9 @@ public class VehicleParkingServiceImpl implements VehicleParkingService {
         return all;
     }
 
-
+    @Override
+    public Optional<ParkingVehicles> getSlotInfo(String slotCode) {
+        return vehicleParkingRepo.getSlotInfo(slotCode, "PARKED");
+    }
+    
 }
